@@ -1,0 +1,166 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import streamlit as st\r\nfrom streamlit_option_menu import option_menu\r\nimport pagina1\r\nimport pagina2\r\nimport pagina3\r\n\r\n# Configurar el menú de navegación en la barra lateral con un tema claro\r\nwith st.sidebar:\r\n    selected = option_menu(\r\n        \"Menú Principal\",\r\n        [\"API SECOP II\", \"RUES\", \"Buscar proveedor\"],\r\n        icons=['house', 'file-earmark', 'search'],\r\n        menu_icon=\"cast\",\r\n        default_index=0,\r\n        styles={\r\n            \"container\": {\r\n                \"padding\": \"5px\",\r\n                \"background-color\": \"#f8f9fa\",  # Fondo blanco claro para el contenedor\r\n                \"border-radius\": \"10px\"  # Bordes redondeados para el contenedor\r\n            },\r\n            \"icon\": {\r\n                \"color\": \"#007bff\",  # Color azul claro para los íconos\r\n                \"font-size\": \"25px\"\r\n            },\r\n            \"nav-link\": {\r\n                \"background-color\": \"#e9ecef\",  # Fondo gris muy claro para los botones\r\n                \"color\": \"#495057\",  # Texto gris oscuro para los botones\r\n                \"border-radius\": \"8px\",  # Bordes redondeados en los botones\r\n                \"font-weight\": \"bold\",  # Negrita en el texto\r\n                \"padding\": \"12px\",  # Espaciado dentro de los botones\r\n                \"transition\": \"background-color 0.3s ease\",  # Transición suave al pasar el mouse\r\n            },\r\n            \"nav-link-selected\": {\r\n                \"background-color\": \"#007bff\",  # Fondo azul brillante cuando está seleccionado\r\n                \"color\": \"#ffffff\",  # Texto blanco cuando está seleccionado\r\n                \"border-radius\": \"8px\",  # Bordes redondeados para el botón seleccionado\r\n                \"font-weight\": \"bold\",\r\n            },\r\n            \"nav-link:hover\": {\r\n                \"background-color\": \"#d6d8db\",  # Fondo gris más oscuro cuando se pasa el mouse\r\n            }\r\n        }\r\n    )\r\n\r\n# Lógica para cargar la página seleccionada\r\nif selected == \"API SECOP II\":\r\n    pagina1.mostrar_estadisticas()\r\nelif selected == \"RUES\":\r\n    pagina2.mostrar_estadisticas()\r\nelif selected == \"Buscar proveedor\":\r\n    pagina3.mostrar_estadisticas()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 5cc2bac15d15ad29e0e104e79c562206cf7b10e3)
++++ b/main.py	(date 1731533282902)
+@@ -1,51 +1,42 @@
+ import streamlit as st
+-from streamlit_option_menu import option_menu
+ import pagina1
+ import pagina2
+ import pagina3
+ 
+-# Configurar el menú de navegación en la barra lateral con un tema claro
+-with st.sidebar:
+-    selected = option_menu(
+-        "Menú Principal",
+-        ["API SECOP II", "RUES", "Buscar proveedor"],
+-        icons=['house', 'file-earmark', 'search'],
+-        menu_icon="cast",
+-        default_index=0,
+-        styles={
+-            "container": {
+-                "padding": "5px",
+-                "background-color": "#f8f9fa",  # Fondo blanco claro para el contenedor
+-                "border-radius": "10px"  # Bordes redondeados para el contenedor
+-            },
+-            "icon": {
+-                "color": "#007bff",  # Color azul claro para los íconos
+-                "font-size": "25px"
+-            },
+-            "nav-link": {
+-                "background-color": "#e9ecef",  # Fondo gris muy claro para los botones
+-                "color": "#495057",  # Texto gris oscuro para los botones
+-                "border-radius": "8px",  # Bordes redondeados en los botones
+-                "font-weight": "bold",  # Negrita en el texto
+-                "padding": "12px",  # Espaciado dentro de los botones
+-                "transition": "background-color 0.3s ease",  # Transición suave al pasar el mouse
+-            },
+-            "nav-link-selected": {
+-                "background-color": "#007bff",  # Fondo azul brillante cuando está seleccionado
+-                "color": "#ffffff",  # Texto blanco cuando está seleccionado
+-                "border-radius": "8px",  # Bordes redondeados para el botón seleccionado
+-                "font-weight": "bold",
+-            },
+-            "nav-link:hover": {
+-                "background-color": "#d6d8db",  # Fondo gris más oscuro cuando se pasa el mouse
+-            }
++# Definir las páginas de navegación
++pages = {
++    "API SECOP II": pagina1.mostrar_estadisticas,
++    "RUES": pagina2.mostrar_estadisticas,
++    "Buscar proveedor": pagina3.mostrar_estadisticas
++}
++
++# Configurar el menú de navegación en la barra lateral usando selectbox
++selected = st.sidebar.selectbox(
++    "Menú Principal",
++    list(pages.keys()),
++    index=0
++)
++
++# Personalización del menú de la barra lateral con CSS
++st.markdown("""
++    <style>
++        .sidebar .sidebar-content {
++            background-color: #f8f9fa;
++            border-radius: 10px;
++        }
++        .css-1d391kg {
++            padding: 12px;
++            font-weight: bold;
+         }
+-    )
++        .css-1d391kg select {
++            background-color: #f8f9fa;
++            border: 2px solid #e9ecef;
++            border-radius: 8px;
++            font-size: 18px;
++            padding: 10px;
++        }
++    </style>
++""", unsafe_allow_html=True)
+ 
+ # Lógica para cargar la página seleccionada
+-if selected == "API SECOP II":
+-    pagina1.mostrar_estadisticas()
+-elif selected == "RUES":
+-    pagina2.mostrar_estadisticas()
+-elif selected == "Buscar proveedor":
+-    pagina3.mostrar_estadisticas()
++pages[selected]()
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"75665b7c-0374-4588-9c1a-53a64ab857dd\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/b2bhackaton.iml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/main.py\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pagina1.py\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pagina2.py\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pagina3.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 7\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2oWcOtKrIFxezEkuFnT3vKgPiKd\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Python.main.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\David\\PycharmProjects\\b2bhackaton\\notebook\" />\r\n      <recent name=\"C:\\Users\\David\\PycharmProjects\\b2bhackaton\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"main\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"b2bhackaton\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/main.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"75665b7c-0374-4588-9c1a-53a64ab857dd\" name=\"Changes\" comment=\"\" />\r\n      <created>1730988743681</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1730988743681</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5cc2bac15d15ad29e0e104e79c562206cf7b10e3)
++++ b/.idea/workspace.xml	(date 1731532952185)
+@@ -4,18 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="75665b7c-0374-4588-9c1a-53a64ab857dd" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/b2bhackaton.iml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pagina1.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pagina2.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pagina3.py" afterDir="false" />
+-    </list>
++    <list default="true" id="75665b7c-0374-4588-9c1a-53a64ab857dd" name="Changes" comment="a" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -31,6 +20,18 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
++  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
++  "lastFilter": {
++    "state": "OPEN",
++    "assignee": "ibarajas248"
++  }
++}]]></component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/ibarajas248/b2bconnectsmart.git",
++    "accountId": "af0e0ae9-d90b-4de9-9567-d36100925378"
++  }
++}]]></component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 7
+ }</component>
+@@ -93,6 +94,19 @@
+       <option name="presentableId" value="Default" />
+       <updated>1730988743681</updated>
+     </task>
++    <task id="LOCAL-00001" summary="a">
++      <option name="closed" value="true" />
++      <created>1731532566222</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1731532566222</updated>
++    </task>
++    <option name="localTasksCounter" value="2" />
+     <servers />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="a" />
++    <option name="LAST_COMMIT_MESSAGE" value="a" />
++  </component>
+ </project>
+\ No newline at end of file
